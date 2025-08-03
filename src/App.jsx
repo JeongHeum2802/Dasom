@@ -15,7 +15,6 @@ export default function App() {
         <Route path="/MyInfo" element={<UserInfoPage />}></Route>
         <Route path="/Chat" element={<ChatPage />}></Route>
       </Routes>
-          <h3>황시선 왔다감</h3>
     </BrowserRouter>
   );
 }
