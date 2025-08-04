@@ -12,8 +12,8 @@ const chatRoomRoutes = require('./routes/chatroom');
 const Message = require('./models/message');
 
 app.use(express.json());
-app.use(chatRoomRoutes);
-app.use(userRoutes);
+app.use('/api', chatRoomRoutes);
+app.use('/api', userRoutes);
 
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*' } });

@@ -1,32 +1,15 @@
+require('dotenv').config();
+
+const axios = require('axios');
 const User = require('../models/user');
 const mongoose = require('mongoose');
 
-exports.createUser = async (req, res, next) => {
+exports.getUsers = async (req, res, next) => {
     try {
-        const { name, gender, age, MBTI, profileImageUrl } = req.body;
-
-        const newUser = await User.create({
-            main :{
-                name: name,
-                gender : gender,
-                age : age,
-                MBTI : MBTI,
-                profileImageUrl: profileImageUrl
-            }   
-        });
-
-        res.status(201).json(newUser);
-    } catch(err){
-        console.log(err);
-    }
-}
-
-exports.getUser = async (req, res, next) => {
-    try {
-        const userId = new mongoose.Types.ObjectId(req.params.userId);
+        const naverId = req.params.naverId;
 
         const otherUsers = await User.find({
-            _id: { $ne: userId }
+            "main.naverId": { $ne: naverId }
         }, 'main');
 
         res.json(otherUsers);
@@ -36,6 +19,64 @@ exports.getUser = async (req, res, next) => {
     }
 };
 
+exports.loginUser = async (req, res, next) => {
+    const client_id = process.env.CLIENT_ID;
+    const redirectURI = process.env.REDIRECT_URI;
+    const state = 'RAMDOM_STATE'
 
+    const api_url = 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=' + client_id + '&redirect_uri=' + encodeURIComponent(redirectURI) + '&state=' + state;
+    res.json({
+        login_url: api_url
+    })
+};
 
+exports.callBack = async (req, res, next) => {
+    const code = req.query.code;
+    const state = req.query.state;
+
+    try {
+        const tokenRes = await axios.get("https://nid.naver.com/oauth2.0/token", {
+            params: {
+                grant_type: 'authorization_code',
+                client_id: process.env.CLIENT_ID,
+                client_secret: process.env.CLIENT_SECRET,
+                redirect_uri: process.env.REDIRECT_URI,
+                code,
+                state
+            }
+        });
+
+        const profileRes = await axios.get("https://openapi.naver.com/v1/nid/me", {
+            headers: {
+                Authorization: `Bearer ${tokenRes.data.access_token}`
+            }
+        });
+
+        const naverId = profileRes.data.response.id;
+
+        let user = await User.findOne({ "main.naverId": naverId });
+
+        console.log(user);
+
+        if (!user) {
+            const currentYear = new Date().getFullYear();
+            user = await User.create({
+                main : {
+                    name : profileRes.data.response.name,
+                    age : currentYear - profileRes.data.response.birthyear + 1,
+                    gender : profileRes.data.response.gender,
+                    naverId : profileRes.data.response.id
+                }
+            });
+        };
+
+        console.log("네이버 유저 정보", profileRes.data);
+        console.log("토큰 응답", tokenRes.data);
+        console.log(user);
+        res.json(tokenRes.data);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("서버 이상");
+    }
+};
 

@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const chatRoomSchema = new Schema({
     participants: [
         {
-            type: Schema.Types.ObjectId,
+            type: String,
             ref: 'User',
             required: true
         }

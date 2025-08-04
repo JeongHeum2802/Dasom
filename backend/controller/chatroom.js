@@ -4,12 +4,11 @@ const Message = require('../models/message');
 exports.getAllChatroom = async (req, res, next) => {
 
     try {
-        const userId = req.params.userId;
+        const naverId = req.params.naverId;
 
         const chatrooms = await Chatroom.find({
-            participants: userId
+            participants: {$in : [naverId]}
         })
-        .populate('participants', 'main.name main.profileImage')
         .sort({ updatedAt: -1 });
 
         const chatRoomsWithLastMessage = await Promise.all(chatrooms.map(async (room) => {

@@ -4,7 +4,7 @@ const router = express.Router();
 
 const chatRoomController = require('../controller/chatroom');
 
-router.get('/all-chatroom/:userId', chatRoomController.getAllChatroom);
+router.get('/all-chatroom/:naverId', chatRoomController.getAllChatroom);
 
 router.post('/chatRoom', chatRoomController.getChatroom);
 

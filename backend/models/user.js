@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const { stringify } = require('querystring');
-const { boolean } = require('webidl-conversions');
 
 const Schema = mongoose.Schema;
 
@@ -11,7 +9,7 @@ const userSchema = new Schema({
             required: true
         },
         gender: {
-            type: Boolean,
+            type: String,
             required: true
         },
         age: {
@@ -20,12 +18,15 @@ const userSchema = new Schema({
         },
         MBTI: {
             type: String,
-            required: true
+            default: ''
         },
         profileImageUrl: {
             type: String,
-            required: true,
             default: ''
+        },
+        naverId: {
+            type: String,
+            required: true
         }
     },
     others: {
@@ -36,6 +37,6 @@ const userSchema = new Schema({
             type: [String]
         }
     }
-})
+}, { timestamps: true })
 
 module.exports = mongoose.model('User', userSchema);
