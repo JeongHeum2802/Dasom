@@ -19,21 +19,43 @@ export default function LoginModal() {
     }
   }, [isModalOpen]);
 
+  async function handleClickLoginButton() {
+    const response = await fetch('/api/naverLogin');
+    const loginUrl = await response.json();
+
+    const re = window.open(loginUrl.login_url, "naverLogin", "width=400px,height=600px");
+  }
+
+  useEffect(() => {
+    const handleMessage = (event) => {
+      if (event.data.type === 'login-success') {
+        const user = event.data.payload;
+        console.log("로그인 성공", user);
+      }
+    }
+
+    window.addEventListener('message', handleMessage);
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    }
+  });
+
   return (
     <dialog ref={dialog} className="m-auto rounded-2xl" onClose={closeLoginModal}>
       <div className="flex flex-col m-4 justify-center items-center w-[420px] h-[600px] rounded-2xl">
         <img src={logo} className="w-50 h-50 mb-3" />
 
         <form method="dialog" className="flex flex-col">
-        <Link to="/Home">
           <button
-            className="mt-12">
+            className="mt-12"
+            onClick={handleClickLoginButton}
+          >
             <img src={loginbarImg} className="w-[350px]"
               onMouseEnter={() => setLoginbarImg(naverLoginHover)}
               onMouseLeave={() => setLoginbarImg(naverLogin)}
             />
           </button>
-          </Link>
         </form>
       </div>
     </dialog>

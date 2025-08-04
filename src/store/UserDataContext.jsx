@@ -14,5 +14,5 @@ export const UserDataContext = createContext([
       friends: [],
       socialUrl: "http://temp.com",
     }
-  }
+  }, 
 ]);

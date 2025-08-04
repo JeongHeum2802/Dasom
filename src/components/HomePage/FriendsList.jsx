@@ -1,33 +1,32 @@
-import { MyDataContext } from '../../store/MyDataContext.jsx';
+
 import { useContext } from 'react';
 
-export default function FriendsList() {
-  const friends = useContext(MyDataContext).friends;
+export default function FriendsList({ friends }) {
 
   return (
     <div className="p-4">
       <h2 className="text-xl font-bold text-pink-800 mb-4">친구 목록</h2>
       {friends.length > 0 ? (
         <ul>
-          {friends.map((friend) => (
-            <li key={friend.id} className="flex items-center justify-between p-3 mb-2 bg-pink-100 rounded-lg shadow-sm">
-              <div className="flex items-center">
-                <div className="w-10 h-10 rounded-full bg-pink-300 flex items-center justify-center mr-3">
-                  <svg className="w-6 h-6 text-pink-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path></svg>
+          {friends.map((friend) => {
+            friend = friend.main;
+            return (
+              <li key={friend.naverId} className="flex items-center justify-between p-3 mb-2 bg-pink-100 rounded-lg shadow-sm">
+                <div className="flex items-center">
+                  <img src={friend.profileImageUrl} alt="null" className="w-10 overflow-hidden rounded-full" />
+                  <div className="ml-2">
+                    <p className="font-semibold text-gray-800">{friend.name}</p>
+                    <p className="text-sm text-gray-600">
+                      {/*friend.message*/}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-semibold text-gray-800">{friend.name}</p>
-                  <p className="text-sm text-gray-600">
-                    {friend.message}
-                  </p>
-                </div>
-              </div>
-              {/* chat button */}
-              <button className="bg-pink-300 hover:bg-pink-400 text-pink-800 font-bold py-1 px-3 rounded-full text-sm transition">
-                채팅
-              </button>
-            </li>
-          ))}
+                {/* chat button */}
+                <button className="bg-pink-300 hover:bg-pink-400 text-pink-800 font-bold py-1 px-3 rounded-full text-sm transition">
+                  채팅
+                </button>
+              </li>);
+          })}
         </ul>
       ) : (
         <p className="text-gray-600">친구를 찾아보세요!</p>

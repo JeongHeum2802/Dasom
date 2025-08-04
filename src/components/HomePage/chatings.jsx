@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 
-import { MyDataContext } from '../../store/MyDataContext.jsx';
 
 export default function Chating() {
   const chatings = useContext(MyDataContext).chatings;

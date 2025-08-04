@@ -61,11 +61,11 @@ exports.callBack = async (req, res, next) => {
         if (!user) {
             const currentYear = new Date().getFullYear();
             user = await User.create({
-                main : {
-                    name : profileRes.data.response.name,
-                    age : currentYear - profileRes.data.response.birthyear + 1,
-                    gender : profileRes.data.response.gender,
-                    naverId : profileRes.data.response.id
+                main: {
+                    name: profileRes.data.response.name,
+                    age: currentYear - profileRes.data.response.birthyear + 1,
+                    gender: profileRes.data.response.gender,
+                    naverId: profileRes.data.response.id
                 }
             });
         };
@@ -73,7 +73,14 @@ exports.callBack = async (req, res, next) => {
         console.log("네이버 유저 정보", profileRes.data);
         console.log("토큰 응답", tokenRes.data);
         console.log(user);
-        res.json(tokenRes.data);
+        res.send(`
+            <!DOCTYPE html><html><head><title>Login Success</title></head><body>
+            <script>
+              window.opener.postMessage({type: 'login-success',payload: ${JSON.stringify(user)}}, 'http://localhost:5173/');
+              window.close();
+            </script>
+            </body></html>
+            `);
     } catch (err) {
         console.log(err);
         res.status(500).send("서버 이상");

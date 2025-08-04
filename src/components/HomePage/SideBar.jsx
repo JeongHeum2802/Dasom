@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import FriendsList from './FriendsList.jsx';
 import Chating from './chatings.jsx';
 
-export default function SideBar() {
+export default function SideBar({ friends }) {
   const [activeTab, setActiveTab] = useState('친구');
   const friendBtnRef = useRef(null);
   const chatBtnRef = useRef(null);
@@ -78,7 +78,8 @@ export default function SideBar() {
           ></div>
         </div>
 
-        {activeTab === '친구' ? <FriendsList /> : <Chating />}
+        {/*activeTab === '친구' ? <FriendsList friends={friends} /> : <Chating />*/}
+        <FriendsList friends={friends} />
       </div>
 
       {/* Footer */}
