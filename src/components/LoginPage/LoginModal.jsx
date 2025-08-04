@@ -3,12 +3,13 @@ import naverLogin from '../../assets/NaverLoginbar.png';
 import naverLoginHover from '../../assets/naverLoginbar_hover.png';
 import { useEffect, useRef, useContext, useState } from 'react';
 import { ModalContext } from '../../store/ModalContext.jsx';
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginModal() {
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState(null);
   const { isModalOpen, closeLoginModal } = useContext(ModalContext);
   const dialog = useRef();
-
   const [loginbarImg, setLoginbarImg] = useState(naverLogin);
 
   useEffect(() => {
@@ -18,6 +19,18 @@ export default function LoginModal() {
       dialog.current.close();
     }
   }, [isModalOpen]);
+
+    // 로그인 성공 시 데이터 전달 및 이동
+    useEffect(() => {
+      if (userData) {
+        navigate('/home', {
+          state: {
+            user: userData,
+          },
+          replace: true
+        });
+      }  
+    }, [userData, navigate]);
 
   async function handleClickLoginButton() {
     const response = await fetch('/api/naverLogin');
@@ -30,7 +43,8 @@ export default function LoginModal() {
     const handleMessage = (event) => {
       if (event.data.type === 'login-success') {
         const user = event.data.payload;
-        console.log("로그인 성공", user);
+        const { main, others } = user;
+        setUserData({main, others});
       }
     }
 
@@ -39,7 +53,7 @@ export default function LoginModal() {
     return () => {
       window.removeEventListener('message', handleMessage);
     }
-  });
+  }, []);
 
   return (
     <dialog ref={dialog} className="m-auto rounded-2xl" onClose={closeLoginModal}>
