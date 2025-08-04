@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import FriendsList from './FriendsList.jsx';
 import Chating from './chatings.jsx';
 
-export default function SideBar({ friends }) {
+export default function SideBar({ friends, myData }) {
   const [activeTab, setActiveTab] = useState('친구');
   const friendBtnRef = useRef(null);
   const chatBtnRef = useRef(null);
@@ -31,11 +31,13 @@ export default function SideBar({ friends }) {
         <div className="flex items-center">
           {/* UserProfile */}
           <div className="w-12 h-12 rounded-full bg-pink-300 flex items-center justify-center mr-3">
-            <svg className="w-10 h-10 text-pink-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path></svg>
+            {myData.main.profileImageUrl !== "" ? (
+            <img src={myData.main.profileImageUrl} />) : (
+            <svg className="w-10 h-10 text-pink-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path></svg>)}
           </div>
           <div className="ml-2">
             {/* UserName */}
-            <p className="font-semibold text-gray-800">User Name</p>
+            <p className="font-semibold text-gray-800">{myData.main.name}</p>
             {/* UserEmail */}
             <p className="text-sm text-gray-600">user@example.com</p>
           </div>

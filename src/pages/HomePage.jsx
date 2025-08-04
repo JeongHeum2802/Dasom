@@ -7,8 +7,6 @@ import SideBar from "../components/HomePage/SideBar.jsx";
 import Main from "../components/HomePage/Main.jsx";
 import UserPage from "../components/HomePage/UserPage.jsx";
 
-
-
 export default function HomePage() {
   const loginData = useLocation().state?.user; // 불러온 User데이터
   const [clickedUser, setClickedUser] = useState(null); // Main에서 클릭된 유저
@@ -58,7 +56,7 @@ export default function HomePage() {
 
   return (
       <div className="flex h-screen overflow-hidden ">
-        <SideBar friends={friends} />
+        <SideBar friends={friends} myData={myData} />
         {clickedUser === null ?
           (<UserDataContext value={anotherData}>
             <Main onUserClick={handleClickUser} scrollPosition={scrollPosition} />
