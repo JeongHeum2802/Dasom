@@ -27,11 +27,15 @@ const userSchema = new Schema({
         naverId: {
             type: String,
             required: true
+        },
+        initUser: {
+            type: Boolean,
+            default: true
         }
     },
     others: {
         friends: {
-            type: [Schema.Types.ObjectId]
+            type: [String]
         },
         socialUrl: {
             type: [String]

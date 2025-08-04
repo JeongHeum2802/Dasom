@@ -7,7 +7,7 @@ import SideBar from "../components/HomePage/SideBar.jsx";
 import Main from "../components/HomePage/Main.jsx";
 import UserPage from "../components/HomePage/UserPage.jsx";
 
-const tempId = "dummy3";
+
 
 export default function HomePage() {
   const location = useLocation();
@@ -22,7 +22,7 @@ export default function HomePage() {
     const fetchData = async () => {
       try {
         // 본인 제외 다른 사용자 정보
-        const responseAnother = await fetch(`/api/main/${tempId}`);
+        const responseAnother = await fetch(`/api/main/${location.state?.user.main.naverId}`);
         const fetchAnotherData = await responseAnother.json();
         setAnotherData(fetchAnotherData);
 

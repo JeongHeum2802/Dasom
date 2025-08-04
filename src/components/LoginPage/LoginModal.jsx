@@ -20,17 +20,18 @@ export default function LoginModal() {
     }
   }, [isModalOpen]);
 
-    // 로그인 성공 시 데이터 전달 및 이동
-    useEffect(() => {
-      if (userData) {
-        navigate('/home', {
-          state: {
-            user: userData,
-          },
-          replace: true
-        });
-      }  
-    }, [userData, navigate]);
+  // 로그인 성공 시 데이터 전달 및 이동
+  useEffect(() => {
+    if (userData) {
+      navigate('/home', {
+        state: {
+          user: userData,
+        },
+        replace: true
+      });
+      console.log(userData);
+    }
+  }, [userData, navigate]);
 
   async function handleClickLoginButton() {
     const response = await fetch('/api/naverLogin');
@@ -44,7 +45,7 @@ export default function LoginModal() {
       if (event.data.type === 'login-success') {
         const user = event.data.payload;
         const { main, others } = user;
-        setUserData({main, others});
+        setUserData({ main, others });
       }
     }
 
