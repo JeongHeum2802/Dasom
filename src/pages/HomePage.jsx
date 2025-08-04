@@ -98,8 +98,7 @@ export default function HomePage() {
       setClickedUser(null);
     } else {
       setScrollPosition(scrollPos);
-      setClickedUser(contextUserData.filter((obj) => obj.id === clickedId)[0]);
-
+      setClickedUser(anotherData.filter((obj) => obj.main.naverId === clickedId)[0]);
     }
   }
 
