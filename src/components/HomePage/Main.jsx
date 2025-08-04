@@ -15,18 +15,23 @@ export default function Main({ onUserClick, scrollPosition }) {
     }
   }, [scrollPosition]);
 
+  if (userData === null) {
+    return <div>NoUser</div>;
+  }
+
   return (
     <div ref={scrollContainerRef} className="flex-1 overflow-y-auto bg-gray-100">
       <div className="p-8 flex flex-wrap gap-6 justify-center" ref={animationParent}>
         {userData.map((user) => {
+          user = user.main;
           return (
             /* userCard */
             <div
-              onClick={() => onUserClick(user.id, scrollContainerRef.current.scrollTop)}
-              key={user.id}
+              onClick={() => onUserClick(user.naverId, scrollContainerRef.current.scrollTop)}
+              key={user.naverId}
               className="w-64 h-80 bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 hover:shadow-xl transition-all duration-300 ease-in-out flex-shrink-0"
             >
-              <img src={user.imgsrc} alt={user.name} className="w-full h-56 object-cover" />
+              <img src={user.profileImageUrl} alt={user.name} className="w-full h-56 object-cover" />
               <div className="p-4 text-center">
                 <p className="font-semibold text-lg text-gray-800">{user.name}</p>
               </div>
