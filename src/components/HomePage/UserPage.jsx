@@ -2,9 +2,9 @@
 
 export default function UserPage({ userData, onCloseUserPage }) {
   return (
-    <div className="flex-1 flex flex-col bg-pink-100 text-gray-800 relative">
+    <div className="h-full flex-1 flex flex-col bg-pink-100 text-gray-800 relative">
       <button onClick={()=>onCloseUserPage(-1)} className="absolute top-6 right-6 text-gray-500 hover:text-gray-800 text-4xl font-bold">&times;</button>
-      <div className="flex-1 flex flex-col items-center justify-center p-12">
+      <div className="flex flex-col items-center justify-center p-12">
         <img
           src={userData.main.profileImageUrl}
           alt={`Profile of ${userData.name}`}
