@@ -87,3 +87,39 @@ exports.callBack = async (req, res, next) => {
     }
 };
 
+exports.updateUserData = async(req, res, next)=>{
+    const {MBTI, profileImageUrl, naverId} = req.body;
+    
+    let user = await User.findOne({"main.naverId" : naverId});
+
+    user.main.profileImageUrl = profileImageUrl;
+    user.main.MBTI = MBTI;
+
+    user.save();
+
+    console.log(user);
+
+    res.end();
+}
+
+exports.plusFriend = async(req, res, next) => {
+    const {friendNaverId, myNaverId} = req.body;
+
+    let user = await User.findOne({"main.naverId" : myNaverId });
+
+    let userFriends = user.others.friends;
+
+    if(userFriends.includes(friendNaverId)){
+        res.send({message: "이미 친구인 유저입니다!"});
+    }
+
+    const updatedFriends = [friendNaverId, ...userFriends];
+
+    user.others.friends = updatedFriends;
+
+    await user.save();
+
+    console.log(user.others.friends);
+
+    res.end();
+}
