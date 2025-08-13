@@ -3,6 +3,7 @@ require('dotenv').config();
 const axios = require('axios');
 const User = require('../models/user');
 const mongoose = require('mongoose');
+const user = require('../models/user');
 
 exports.getUsers = async (req, res, next) => {
     try {
@@ -131,4 +132,20 @@ exports.plusFriend = async(req, res, next) => {
     console.log(user.others.friends);
 
     res.end();
+}
+
+exports.deleteFriend = async(req, res, next) => {
+    const {myNaverId, friendNaverId} = req.body;
+
+    try{
+        await User.updateOne(       //친구 목록에서 friendNaverId와 같은 친구 삭제
+            {"main.naverId" : myNaverId},
+            {$pull : {"others.friends" : friendNaverId}}
+        );
+
+        res.status(200).send({message: "삭제 성공!!"});
+    } catch(err){
+        console.log(err);
+        res.status(500).send({message: "서버 오류!"});
+    }
 }

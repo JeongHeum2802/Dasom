@@ -9,5 +9,6 @@ router.get('/naverLogin', userController.loginUser);
 router.get('/callback', userController.callBack);
 router.post('/updateUser', userController.updateUserData);
 router.post('/plusFriend', userController.plusFriend);
+router.put('/deleteFriend', userController.deleteFriend);
 
 module.exports = router;
