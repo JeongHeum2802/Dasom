@@ -1,10 +1,10 @@
 import { useContext, useRef, useEffect } from 'react';
 
-import { AnotherUsersContext } from '../../store/AnotherUsersContext.jsx';
+import { useUsersData } from '../../store/AnotherUsersContext.jsx';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 export default function Main({ onUserClick, scrollPosition }) {
-  const usersData = useContext(AnotherUsersContext);
+  const { users:usersData } = useUsersData();
   const [animationParent] = useAutoAnimate();
 
   const scrollContainerRef = useRef(null);
@@ -27,7 +27,7 @@ export default function Main({ onUserClick, scrollPosition }) {
           return (
             /* userCard */
             <div
-              onClick={() => onUserClick(user.naverId, scrollContainerRef.current.scrollTop)}
+              onClick={() => onUserClick(user, scrollContainerRef.current.scrollTop)}
               key={user.naverId}
               className="w-64 h-80 bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 hover:shadow-xl transition-all duration-300 ease-in-out flex-shrink-0"
             >
