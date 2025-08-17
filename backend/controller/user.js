@@ -149,3 +149,23 @@ exports.deleteFriend = async(req, res, next) => {
         res.status(500).send({message: "서버 오류!"});
     }
 }
+
+// controller/user.js
+exports.saveUserInfo = async (req, res) => {
+  try {
+    const { naverId, name, email, mbti } = req.body;
+    await User.findOneAndUpdate(
+      { 'main.naverId': naverId },
+      {
+        $set: {
+          'main.name': name,
+          'main.MBTI': mbti,
+        }
+      },
+      { upsert: true, new: true }
+    );
+    res.json({ message: '저장 완료!' });
+  } catch (err) {
+    res.status(500).json({ message: '저장 중 오류가 발생했습니다.', error: err });
+  }
+};
