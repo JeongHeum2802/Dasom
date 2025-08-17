@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { UserDataContext } from "../store/UserDataContext.jsx";
+import { AnotherUsersContext } from "../store/AnotherUsersContext.jsx";
 
 import SideBar from "../components/HomePage/SideBar.jsx";
 import Main from "../components/HomePage/Main.jsx";
@@ -58,9 +58,9 @@ export default function HomePage() {
       <div className="flex h-screen overflow-hidden ">
         <SideBar friends={friends} myData={myData} />
         {clickedUser === null ?
-          (<UserDataContext value={anotherData}>
+          (<AnotherUsersContext value={anotherData}>
             <Main onUserClick={handleClickUser} scrollPosition={scrollPosition} />
-          </UserDataContext>) :
+          </AnotherUsersContext>) :
           (<UserPage userData={clickedUser} onCloseUserPage={handleClickUser} />)
         }
       </div>

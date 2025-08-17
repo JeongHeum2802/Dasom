@@ -1,5 +1,4 @@
 
-
 export default function UserPage({ userData, onCloseUserPage }) {
   return (
     <div className="h-full flex-1 flex flex-col bg-pink-100 text-gray-800 relative">

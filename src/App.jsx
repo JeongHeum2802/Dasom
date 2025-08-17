@@ -8,13 +8,13 @@ import ChatPage from './pages/ChatPage.jsx';
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LoginPage />}></Route>
-        <Route path="/Home" element={<HomePage />}></Route>
-        <Route path="/MyInfo" element={<UserInfoPage />}></Route>
-        <Route path="/Chat" element={<ChatPage />}></Route>
-      </Routes>
-    </BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LoginPage />}></Route>
+          <Route path="/Home" element={<HomePage />}></Route>
+          <Route path="/MyInfo" element={<UserInfoPage />}></Route>
+          <Route path="/Chat" element={<ChatPage />}></Route>
+        </Routes>
+      </BrowserRouter>
   );
 }

@@ -1,10 +1,10 @@
 import { useContext, useRef, useEffect } from 'react';
 
-import { UserDataContext } from '../../store/UserDataContext.jsx';
+import { AnotherUsersContext } from '../../store/AnotherUsersContext.jsx';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 export default function Main({ onUserClick, scrollPosition }) {
-  const userData = useContext(UserDataContext);
+  const usersData = useContext(AnotherUsersContext);
   const [animationParent] = useAutoAnimate();
 
   const scrollContainerRef = useRef(null);
@@ -15,14 +15,14 @@ export default function Main({ onUserClick, scrollPosition }) {
     }
   }, [scrollPosition]);
 
-  if (userData === null) {
+  if (usersData === null) {
     return <div>NoUser</div>;
   }
 
   return (
     <div ref={scrollContainerRef} className="flex-1 overflow-y-auto bg-gray-100">
       <div className="p-8 flex flex-wrap gap-6 justify-center" ref={animationParent}>
-        {userData.map((user) => {
+        {usersData.map((user) => {
           user = user.main;
           return (
             /* userCard */

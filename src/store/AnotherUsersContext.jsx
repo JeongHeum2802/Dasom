@@ -1,9 +1,10 @@
 import { createContext } from 'react';
 
-export const UserDataContext = createContext([
+export const AnotherUsersContext = createContext([
   {
     main: {
-      naverId: 1,
+      initUser: true,
+      naverId: "NNuH1zGCczSOBB",
       name: 'none',
       profileImageUrl: 'http://localhost:5173/asstes/img.png',
       message: '상태메세지',
@@ -14,5 +15,5 @@ export const UserDataContext = createContext([
       friends: [],
       socialUrl: "http://temp.com",
     }
-  }, 
+  },
 ]);

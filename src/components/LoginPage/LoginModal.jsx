@@ -23,6 +23,7 @@ export default function LoginModal() {
   // 로그인 성공 시 데이터 전달 및 이동
   useEffect(() => {
     if (userData) {
+      console.log(userData);
       navigate('/home', {
         state: {
           user: userData,
