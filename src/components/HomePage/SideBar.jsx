@@ -1,9 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 
+import { useUsersData } from '../../store/AnotherUsersContext.jsx';
+
 import FriendsList from './FriendsList.jsx';
 import Chating from './Chatings.jsx';
 
-export default function SideBar({ friends, myData }) {
+export default function SideBar({ myData }) {
+  const { friends, isLoding } = useUsersData();
   const [activeTab, setActiveTab] = useState('친구');
   const friendBtnRef = useRef(null);
   const chatBtnRef = useRef(null);
@@ -22,6 +25,11 @@ export default function SideBar({ friends, myData }) {
       });
     }
   }, [activeTab]);
+
+  // 유저 목록 불러올때까지 대기
+  if (!isLoding) {
+    return <p>loding....</p>
+  }
 
   return (
     // Main background: light pink for light mode, dark gray for dark mode

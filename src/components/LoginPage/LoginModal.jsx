@@ -3,10 +3,12 @@ import naverLogin from '../../assets/NaverLoginbar.png';
 import naverLoginHover from '../../assets/naverLoginbar_hover.png';
 import { useEffect, useRef, useContext, useState } from 'react';
 import { ModalContext } from '../../store/ModalContext.jsx';
+import { useMyData } from '../../store/MyDataContext.jsx';
 import { useNavigate } from "react-router-dom";
 
 export default function LoginModal() {
   const navigate = useNavigate();
+  const { login } = useMyData();
   const [userData, setUserData] = useState(null);
   const { isModalOpen, closeLoginModal } = useContext(ModalContext);
   const dialog = useRef();
@@ -23,12 +25,8 @@ export default function LoginModal() {
   // 로그인 성공 시 데이터 전달 및 이동
   useEffect(() => {
     if (userData) {
-      navigate('/home', {
-        state: {
-          user: userData,
-        },
-        replace: true
-      });
+      login(userData);
+      navigate('/home');
     }
   }, [userData, navigate]);
 
@@ -36,7 +34,7 @@ export default function LoginModal() {
     const response = await fetch('/api/naverLogin');
     const loginUrl = await response.json();
 
-    const re = window.open(loginUrl.login_url, "naverLogin", "width=400px,height=600px");
+    window.open(loginUrl.login_url, "naverLogin", "width=400px,height=600px");
   }
 
   useEffect(() => {
