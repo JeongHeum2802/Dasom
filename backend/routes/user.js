@@ -10,5 +10,6 @@ router.get('/callback', userController.callBack);
 router.post('/updateUser', userController.updateUserData);
 router.post('/plusFriend', userController.plusFriend);
 router.put('/deleteFriend', userController.deleteFriend);
+router.post('/saveInfo',userController.saveUserInfo);
 
 module.exports = router;
