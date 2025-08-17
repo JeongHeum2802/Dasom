@@ -1,13 +1,41 @@
 import { useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import userImg from '../../public/userImg/user_7.png';
+import axios from 'axios';
+const api = axios.create({
+  baseURL: 'https://localhost:3000',
+});
 
 export default function UserInfoPage() {
   const [name, setName] = useState('김첨지');
   const [email, setEmail] = useState('example@example.com');
   const [mbti, setMbti] = useState('INFP');
+  const navigate = useNavigate();
 
   function handleBack() {
     // 추후 라우팅 라이브러리 도입 시, 이전 페이지로 이동하는 로직 구현
+  }
+
+
+
+  async function handleSave() {
+    try {
+      // 네이버 로그인 시 저장된 naverId 가져오기
+      const naverId = localStorage.getItem('naverId');
+
+      const response = await axios.post('/api/saveInfo', {
+        naverId,
+        name,
+        email,
+        mbti
+      });
+      alert(response.data.message);
+      navigate('/home');  
+    } catch (err) {
+      console.error(err);
+      alert('저장 중 오류가 발생했습니다.');
+    }
+
   }
 
   return (
@@ -69,7 +97,11 @@ export default function UserInfoPage() {
         </div>
 
         <div className="w-full max-w-lg mt-10">
-          <button className="w-full bg-pink-500 text-white font-bold py-4 px-6 rounded-full hover:bg-pink-600 transition-colors shadow-lg duration-200">
+          <button 
+          style={{ cursor: 'pointer' }}
+          className="w-full bg-pink-500 text-white font-bold py-4 px-6 rounded-full hover:bg-pink-600 transition-colors shadow-lg duration-200"
+          onClick = {handleSave}
+          >
             저장
           </button>
         </div>
