@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 
-
 export default function Chatings() {
   const chatings = useContext(MyDataContext).chatings;
   return (
