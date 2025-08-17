@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
 
-export default function Chating() {
+export default function Chatings() {
   const chatings = useContext(MyDataContext).chatings;
   return (
     <div className="p-4">

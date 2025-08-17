@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 
 import FriendsList from './FriendsList.jsx';
-import Chating from './chatings.jsx';
+import Chating from './Chatings.jsx';
 
 export default function SideBar({ friends, myData }) {
   const [activeTab, setActiveTab] = useState('친구');
