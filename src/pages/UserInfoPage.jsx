@@ -11,7 +11,7 @@ const api = axios.create({
 
 
 export default function UserInfoPage() {
-  const { user } = useMyData();
+  const { user, setUser } = useMyData();
   const [name, setName] = useState('김첨지');
   const [mbti, setMbti] = useState('INFP');
   const navigate = useNavigate();
@@ -27,7 +27,13 @@ export default function UserInfoPage() {
         mbti
       });
       alert(response.data.message);
-      navigate('/home');  
+      setUser((prevUserData) => {
+        const newData = {
+          ...prevUserData,
+          initUser: false,
+        }
+      })
+      navigate('/home');
     } catch (err) {
       console.error(err);
       alert('저장 중 오류가 발생했습니다.');
@@ -81,10 +87,10 @@ export default function UserInfoPage() {
         </div>
 
         <div className="w-full max-w-lg mt-10">
-          <button 
-          style={{ cursor: 'pointer' }}
-          className="w-full bg-pink-500 text-white font-bold py-4 px-6 rounded-full hover:bg-pink-600 transition-colors shadow-lg duration-200"
-          onClick = {handleSave}
+          <button
+            style={{ cursor: 'pointer' }}
+            className="w-full bg-pink-500 text-white font-bold py-4 px-6 rounded-full hover:bg-pink-600 transition-colors shadow-lg duration-200"
+            onClick={handleSave}
           >
             저장
           </button>
