@@ -17,7 +17,7 @@ const userSchema = new Schema({
             required: true
         },
         MBTI: {
-            type: String,
+            type: String,   
             default: ''
         },
         profileImageUrl: {
