@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
-import userImg from '../../public/userImg/user_7.png';
 import axios from 'axios';
 const api = axios.create({
   baseURL: 'https://localhost:3000',
