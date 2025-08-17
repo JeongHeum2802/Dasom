@@ -160,12 +160,14 @@ exports.saveUserInfo = async (req, res) => {
         $set: {
           'main.name': name,
           'main.MBTI': mbti,
-          'main.userInit': false,
+          'main.initUser': false,
         }
       },
       { upsert: true, new: true }
     );
-    res.json({ message: '저장 완료!' });
+    res.json({ 
+        message: '저장 완료!',
+    });
   } catch (err) {
     res.status(500).json({ message: '저장 중 오류가 발생했습니다.', error: err });
   }

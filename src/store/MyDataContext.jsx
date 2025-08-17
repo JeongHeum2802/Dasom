@@ -33,7 +33,7 @@ export const MyDataProvider = ({ children }) => {
     setUser(null);
   }
 
-  const value = { user, login, logout };
+  const value = { user, setUser, login, logout };
 
   return (
     <MyDataContext.Provider value={value}>
