@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useMyData } from '../store/MyDataContext.jsx';
 
 import { AnotherUsersContext } from "../store/AnotherUsersContext.jsx";
 
@@ -8,28 +8,25 @@ import Main from "../components/HomePage/Main.jsx";
 import UserPage from "../components/HomePage/UserPage.jsx";
 
 export default function HomePage() {
-  const loginData = useLocation().state?.user; // 불러온 User데이터
   const [clickedUser, setClickedUser] = useState(null); // Main에서 클릭된 유저
   const [scrollPosition, setScrollPosition] = useState(0); // Scroll 위치
   const [anotherData, setAnotherData] = useState(null); // 본인제외 모든사람
-  const [myData, setMyData] = useState(null); // 본인 데이터
   const [isLoding, setIsLoding] = useState(false); // 데이터 로딩 중
   const [friends, setFriends] = useState([]);
+
+  const { user } = useMyData();
 
   // 다른 사용자 정보 불러오기 및 user정보 설정
   useEffect(() => {
     const fetchData = async () => {
       try {
         // 본인 제외 다른 사용자 정보
-        const responseAnother = await fetch(`/api/main/${loginData.main.naverId}`);
+        const responseAnother = await fetch(`/api/main/${user.main.naverId}`);
         const fetchAnotherData = await responseAnother.json();
         setAnotherData(fetchAnotherData);
 
-        // 본인 정보 설정
-        setMyData(loginData);
-
         // 친구들 정보 필터링
-        setFriends(fetchAnotherData.filter(user => loginData.others.friends.includes(user.main.naverId)));
+        setFriends(fetchAnotherData.filter(friend => user.others.friends.includes(friend.main.naverId)));
       } catch (error) {
         console.error("에러!!: ", error);
       } finally {
@@ -56,7 +53,7 @@ export default function HomePage() {
 
   return (
       <div className="flex h-screen overflow-hidden ">
-        <SideBar friends={friends} myData={myData} />
+        <SideBar friends={friends} myData={user} />
         {clickedUser === null ?
           (<AnotherUsersContext value={anotherData}>
             <Main onUserClick={handleClickUser} scrollPosition={scrollPosition} />
