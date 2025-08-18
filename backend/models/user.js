@@ -17,7 +17,7 @@ const userSchema = new Schema({
             required: true
         },
         MBTI: {
-            type: String,   
+            type: String,
             default: ''
         },
         profileImageUrl: {
@@ -31,7 +31,7 @@ const userSchema = new Schema({
         initUser: {
             type: Boolean,
             default: true
-        }
+        },
     },
     others: {
         friends: {

@@ -11,5 +11,7 @@ router.post('/updateUser', userController.updateUserData);
 router.post('/plusFriend', userController.plusFriend);
 router.put('/deleteFriend', userController.deleteFriend);
 router.post('/saveInfo',userController.saveUserInfo);
+router.get('/getUserAlarm/:naverId', userController.getUserAlarm);
+router.post('/makeAlarm', userController.makeAlarm);
 
 module.exports = router;
