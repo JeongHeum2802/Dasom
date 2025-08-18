@@ -12,8 +12,8 @@ const api = axios.create({
 
 export default function UserInfoPage() {
   const { user, setUser } = useMyData();
-  const [name, setName] = useState('김첨지');
-  const [mbti, setMbti] = useState('INFP');
+  const [name, setName] = useState(user.main.name);
+  const [mbti, setMbti] = useState(user.main.MBTI);
   const navigate = useNavigate();
 
   async function handleSave() {

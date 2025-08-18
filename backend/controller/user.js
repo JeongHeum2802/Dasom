@@ -165,7 +165,7 @@ exports.saveUserInfo = async (req, res) => {
             {
                 $set: {
                     'main.name': name,
-                    'main.mbti': mbti,
+                    'main.MBTI': mbti,
                     'main.initUser': false,
                 }
             },
