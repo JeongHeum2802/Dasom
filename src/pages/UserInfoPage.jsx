@@ -27,12 +27,7 @@ export default function UserInfoPage() {
         mbti
       });
       alert(response.data.message);
-      setUser((prevUserData) => {
-        const newData = {
-          ...prevUserData,
-          initUser: false,
-        }
-      })
+      setUser(response.data.user);
       navigate('/home');
     } catch (err) {
       console.error(err);
