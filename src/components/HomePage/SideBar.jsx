@@ -1,11 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 
-import { useUsersData } from '../../store/AnotherUsersContext.jsx';
+import {useUsersData} from '../../store/AnotherUsersContext.jsx'
 
 import FriendsList from './FriendsList.jsx';
 import Chating from './Chatings.jsx';
 
 export default function SideBar({ myData }) {
+  const navigate = useNavigate();
   const { friends, isLoding } = useUsersData();
   const [activeTab, setActiveTab] = useState('친구');
   const friendBtnRef = useRef(null);
@@ -26,6 +28,10 @@ export default function SideBar({ myData }) {
     }
   }, [activeTab]);
 
+  const handleClickUserProfile = () => {
+    navigate('/MyInfo');
+  }
+
   // 유저 목록 불러올때까지 대기
   if (!isLoding) {
     return <p>loding....</p>
@@ -38,7 +44,10 @@ export default function SideBar({ myData }) {
       <div className="p-4 border-b-2 border-pink-300 bg-pink-100">
         <div className="flex items-center">
           {/* UserProfile */}
-          <div className="w-12 h-12 rounded-full bg-pink-300 flex items-center justify-center mr-3">
+          <div 
+          onClick={handleClickUserProfile}
+          className="w-12 h-12 rounded-full bg-pink-300 flex items-center justify-center mr-3"
+          >
             {myData.main.profileImageUrl !== "" ? (
             <img src={myData.main.profileImageUrl} />) : (
             <svg className="w-10 h-10 text-pink-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path></svg>)}

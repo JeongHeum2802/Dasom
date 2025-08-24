@@ -88,11 +88,11 @@ exports.callBack = async (req, res, next) => {
     }
 };
 
-exports.updateUserData = async(req, res, next)=>{
+exports.updateUserData = async (req, res, next) => {
     //프론트에서 유저의 추가 정보들 받기 (여기 항목들말고도 추가로 들어올 수도 있음)
-    const {MBTI, profileImageUrl, naverId} = req.body;
-    
-    let user = await User.findOne({"main.naverId" : naverId});
+    const { MBTI, profileImageUrl, naverId } = req.body;
+
+    let user = await User.findOne({ "main.naverId": naverId });
 
     //해당 유저의 추가 정보들 저장(해당 정보는 원래 없었고, 들어오는 정보들은 전부 유효하다고 가정)
     user.main.profileImageUrl = profileImageUrl;
@@ -106,19 +106,19 @@ exports.updateUserData = async(req, res, next)=>{
     res.end();
 }
 
-exports.plusFriend = async(req, res, next) => {
+exports.plusFriend = async (req, res, next) => {
     //내 네이버 아이디와 친구의 네이버 아이디를 프론트에서 받아옴
-    const {friendNaverId, myNaverId} = req.body;
+    const { friendNaverId, myNaverId } = req.body;
 
     //먼저 내 정보를 불러옴
-    let user = await User.findOne({"main.naverId" : myNaverId });
+    let user = await User.findOne({ "main.naverId": myNaverId });
 
     //내 친구들의 목록을 불러옴
     let userFriends = user.others.friends;
 
     //만약 내 친구들 목록에 해당 유저가 이미 있는 경우 이렇게 반환 후 종료
-    if(userFriends.includes(friendNaverId)){
-        return res.send({message: "이미 친구인 유저입니다!"});
+    if (userFriends.includes(friendNaverId)) {
+        return res.send({ message: "이미 친구인 유저입니다!" });
     }
 
     //아닐 경우 해당 유저를 껴서 새로운 배열 만들기
@@ -134,38 +134,52 @@ exports.plusFriend = async(req, res, next) => {
     res.end();
 }
 
-exports.deleteFriend = async(req, res, next) => {
-    const {myNaverId, friendNaverId} = req.body;
+exports.deleteFriend = async (req, res, next) => {
+    const { myNaverId, friendNaverId } = req.body;
 
-    try{
+    try {
         await User.updateOne(       //친구 목록에서 friendNaverId와 같은 친구 삭제
-            {"main.naverId" : myNaverId},
-            {$pull : {"others.friends" : friendNaverId}}
+            { "main.naverId": myNaverId },
+            { $pull: { "others.friends": friendNaverId } }
         );
 
-        res.status(200).send({message: "삭제 성공!!"});
-    } catch(err){
+        res.status(200).send({ message: "삭제 성공!!" });
+    } catch (err) {
         console.log(err);
-        res.status(500).send({message: "서버 오류!"});
+        res.status(500).send({ message: "서버 오류!" });
     }
 }
 
 // controller/user.js
 exports.saveUserInfo = async (req, res) => {
-  try {
-    const { naverId, name, email, mbti } = req.body;
-    await User.findOneAndUpdate(
-      { 'main.naverId': naverId },
-      {
-        $set: {
-          'main.name': name,
-          'main.MBTI': mbti,
+    try {
+        const { naverId, name, mbti } = req.body;
+
+        if (!naverId || !name || !mbti) {
+            return res.status(400).json({ message: '필수값이 누락되었습니다.' });
         }
-      },
-      { upsert: true, new: true }
-    );
-    res.json({ message: '저장 완료!' });
-  } catch (err) {
-    res.status(500).json({ message: '저장 중 오류가 발생했습니다.', error: err });
-  }
+
+        // 업데이트 후 문서 반환
+        const updatedUser = await User.findOneAndUpdate(
+            { 'main.naverId': naverId },
+            {
+                $set: {
+                    'main.name': name,
+                    'main.MBTI': mbti,
+                    'main.initUser': false,
+                }
+            },
+            { upsert: true, new: true }
+        );
+        
+        res.json({
+            message: '저장 완료!',
+            user: updatedUser
+        });
+    } catch (err) {
+        res.status(500).json({
+            message: '저장 중 오류가 발생했습니다.',
+            error: err.message
+        });
+    }
 };
