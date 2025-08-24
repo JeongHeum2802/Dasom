@@ -153,21 +153,34 @@ exports.deleteFriend = async (req, res, next) => {
 // controller/user.js
 exports.saveUserInfo = async (req, res) => {
     try {
-        const { naverId, name, email, mbti } = req.body;
-        await User.findOneAndUpdate(
+        const { naverId, name, mbti } = req.body;
+
+        if (!naverId || !name || !mbti) {
+            return res.status(400).json({ message: '필수값이 누락되었습니다.' });
+        }
+
+        // 업데이트 후 문서 반환
+        const updatedUser = await User.findOneAndUpdate(
             { 'main.naverId': naverId },
             {
                 $set: {
                     'main.name': name,
                     'main.MBTI': mbti,
-                    'main.initUser': true
+                    'main.initUser': false,
                 }
             },
             { upsert: true, new: true }
         );
-        res.json({ message: '저장 완료!' });
+        
+        res.json({
+            message: '저장 완료!',
+            user: updatedUser
+        });
     } catch (err) {
-        res.status(500).json({ message: '저장 중 오류가 발생했습니다.', error: err });
+        res.status(500).json({
+            message: '저장 중 오류가 발생했습니다.',
+            error: err.message
+        });
     }
 };
 

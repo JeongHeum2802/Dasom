@@ -26,7 +26,12 @@ export default function LoginModal() {
   useEffect(() => {
     if (userData) {
       login(userData);
-      navigate('/home');
+
+      if (userData.main.initUser) {
+        navigate('/MyInfo');
+      } else {
+        navigate('/home');
+      }
     }
   }, [userData, navigate]);
 

@@ -1,7 +1,6 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { AnotherUsersDataProvider } from './store/AnotherUsersContext.jsx';
 import { MyDataProvider } from './store/MyDataContext.jsx';
 
 import LoginPage from './pages/LoginPage.jsx';

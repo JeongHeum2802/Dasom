@@ -17,7 +17,6 @@ export default function HomePage() {
   // context 사용
   const { user } = useMyData(); // 내 정보
 
-
   // Main의 유저 클릭시 스크롤 저장 및 필터링
   function handleClickUser(clickedUser, scrollPos = 0) {
     if (clickedUser === -1) {
