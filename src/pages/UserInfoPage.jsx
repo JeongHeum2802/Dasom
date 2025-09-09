@@ -8,15 +8,16 @@ const api = axios.create({
   baseURL: 'https://localhost:3000',
 });
 
-
-
 export default function UserInfoPage() {
   const { user, setUser } = useMyData();
+  const [image, setImage] = useState(user.main.profileImageUrl); //화면에 보이는 url
   const [name, setName] = useState(user.main.name);
   const [mbti, setMbti] = useState(user.main.MBTI);
+  const [newImageOb, setNewImageOb] = useState(null); // 이미지 객체
+  
   const navigate = useNavigate();
 
-  async function handleSave() {
+  async function handleSubmit() {
     try {
       // 네이버 로그인 시 저장된 naverId 가져오기
       const naverId = user.main.naverId;
@@ -35,10 +36,26 @@ export default function UserInfoPage() {
     }
   }
 
+  function handleBack() {
+    navigate('/Home');
+  }
+
+  function handleImageChange(event) {
+    const file = event.target.files[0];
+    if (file) {
+      setNewImageOb(file);
+
+      // 미리보기용 url
+      const url = URL.createObjectURL(file);
+      setImage(url);
+    }
+  }
+
   return (
     <>
       <div className="fixed left-10 top-10 w-full max-w-lg">
-        <button className="absolute top-0 left-0 bg-white p-3 rounded-full hover:bg-gray-100 transition-colors shadow-md">
+        {/*뒤로가기 버튼*/}
+        <button onClick={handleBack} className="absolute top-0 left-0 bg-white p-3 rounded-full hover:bg-gray-100 transition-colors shadow-md">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
@@ -46,13 +63,16 @@ export default function UserInfoPage() {
       </div>
 
       <div className="flex flex-col w-full items-center pt-10 bg-pink-50 min-h-screen">
+        {/* profile Image */}
         <div className="relative mb-8 mt-16">
-          <img src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTwvOCtju1bCNx_OX8EupPez6qMjmkLRB6pGPzufiJ_dxk1DfhDnPNV1DHlp3GWJ4hsQ4P6XKYNnmoHzVSeO3GYRmbJvtOICIPhzX2bGflNQ"} className="rounded-full w-80 h-80 object-cover border-8 border-pink-200 shadow-lg" />
-          <button className="absolute bottom-2 right-2 bg-pink-500 p-3 rounded-full hover:bg-pink-600 transition-colors shadow-md">
+          <img src={image} className="rounded-full w-80 h-80 object-cover border-8 border-pink-200 shadow-lg" />
+          {/* image set button */}
+          <input id="fileInput" onChange={handleImageChange} type="file" className="hidden" />
+          <label htmlFor="fileInput" className="absolute bottom-2 right-2 bg-pink-500 p-3 rounded-full hover:bg-pink-600 transition-colors shadow-md">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L14.732 5.232z" />
             </svg>
-          </button>
+          </label>
         </div>
 
         <div className="w-full max-w-lg space-y-6">
@@ -85,7 +105,7 @@ export default function UserInfoPage() {
           <button
             style={{ cursor: 'pointer' }}
             className="w-full bg-pink-500 text-white font-bold py-4 px-6 rounded-full hover:bg-pink-600 transition-colors shadow-lg duration-200"
-            onClick={handleSave}
+            onClick={handleSubmit}
           >
             저장
           </button>
