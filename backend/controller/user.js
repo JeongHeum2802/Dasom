@@ -153,9 +153,9 @@ exports.deleteFriend = async (req, res, next) => {
 // controller/user.js
 exports.saveUserInfo = async (req, res) => {
     try {
-        const { naverId, name, mbti } = req.body;
+        const { naverId, name, mbti, profileImageUrl } = req.body;
 
-        if (!naverId || !name || !mbti) {
+        if (!naverId || !name || !mbti || !profileImageUrl) {
             return res.status(400).json({ message: '필수값이 누락되었습니다.' });
         }
 
@@ -167,6 +167,7 @@ exports.saveUserInfo = async (req, res) => {
                     'main.name': name,
                     'main.MBTI': mbti,
                     'main.initUser': false,
+                    'main.profileImageUrl': profileImageUrl,
                 }
             },
             { upsert: true, new: true }

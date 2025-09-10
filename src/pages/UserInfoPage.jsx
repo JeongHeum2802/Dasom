@@ -14,7 +14,7 @@ export default function UserInfoPage() {
   const [name, setName] = useState(user.main.name);
   const [mbti, setMbti] = useState(user.main.MBTI);
   const [newImageOb, setNewImageOb] = useState(null); // 이미지 객체
-  
+
   const navigate = useNavigate();
 
   async function handleSubmit() {
@@ -22,10 +22,23 @@ export default function UserInfoPage() {
       // 네이버 로그인 시 저장된 naverId 가져오기
       const naverId = user.main.naverId;
 
+      // 이미지 cloudinary에 업로드 후 링크 얻기
+      const formData = new FormData();
+      formData.append("file", newImageOb);
+      formData.append("upload_preset", "dasom_demo");
+
+      const cloudinaryRes = await fetch(
+        "https://api.cloudinary.com/v1_1/de0jdvkyy/image/upload",
+        { method: "POST", body: formData }
+      );
+
+      const cloudinaryData = await cloudinaryRes.json();
+
       const response = await axios.post('/api/saveInfo', {
         naverId,
         name,
-        mbti
+        mbti,
+        profileImageUrl: cloudinaryData.secure_url,
       });
       alert(response.data.message);
       setUser(response.data.user);
