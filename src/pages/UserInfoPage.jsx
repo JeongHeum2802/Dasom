@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { useMyData } from '../store/MyDataContext';
+import { setSections } from 'useref/lib/buildBlockManager';
 
 const api = axios.create({
   baseURL: 'https://localhost:3000',
@@ -49,6 +50,30 @@ export default function UserInfoPage() {
     }
   }
 
+  function Imagechange() {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  }
+  
+  function handleImageChange(event) {
+    const file = event.target.files[0];
+
+    if (file)
+    {
+      setImage(file);
+      console.log(file);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result);      // 미리 선언 후 URL이 들어오면 실행
+      };
+      reader.readAsDataURL(file);    // 파일을 URL로 읽어들임
+      console.log(previewUrl)
+    }
+    
+  }
+
   function handleBack() {
     navigate('/Home');
   }
@@ -66,6 +91,7 @@ export default function UserInfoPage() {
 
   return (
     <>
+    {/* 뒤로가기 Button */}
       <div className="fixed left-10 top-10 w-full max-w-lg">
         {/*뒤로가기 버튼*/}
         <button onClick={handleBack} className="absolute top-0 left-0 bg-white p-3 rounded-full hover:bg-gray-100 transition-colors shadow-md">
@@ -74,7 +100,8 @@ export default function UserInfoPage() {
           </svg>
         </button>
       </div>
-
+      
+      {/*Image Input*/}
       <div className="flex flex-col w-full items-center pt-10 bg-pink-50 min-h-screen">
         {/* profile Image */}
         <div className="relative mb-8 mt-16">
@@ -83,7 +110,7 @@ export default function UserInfoPage() {
           <input id="fileInput" onChange={handleImageChange} type="file" className="hidden" />
           <label htmlFor="fileInput" className="absolute bottom-2 right-2 bg-pink-500 p-3 rounded-full hover:bg-pink-600 transition-colors shadow-md">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L14.732 5.232z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 1  13.536 3.536L6.5 21.036H3v-3.5L14.732 5.232z" />
             </svg>
           </label>
         </div>
