@@ -1,9 +1,8 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { useMyData } from '../store/MyDataContext';
-import { setSections } from 'useref/lib/buildBlockManager';
 
 const api = axios.create({
   baseURL: 'https://localhost:3000',
@@ -49,30 +48,7 @@ export default function UserInfoPage() {
       alert('저장 중 오류가 발생했습니다.');
     }
   }
-
-  function Imagechange() {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  }
   
-  function handleImageChange(event) {
-    const file = event.target.files[0];
-
-    if (file)
-    {
-      setImage(file);
-      console.log(file);
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewUrl(reader.result);      // 미리 선언 후 URL이 들어오면 실행
-      };
-      reader.readAsDataURL(file);    // 파일을 URL로 읽어들임
-      console.log(previewUrl)
-    }
-    
-  }
 
   function handleBack() {
     navigate('/Home');
