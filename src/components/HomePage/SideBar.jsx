@@ -12,21 +12,20 @@ export default function SideBar({ myData }) {
   const [activeTab, setActiveTab] = useState('친구');
   const friendBtnRef = useRef(null);
   const chatBtnRef = useRef(null);
-  const [underlineStyle, setUnderlineStyle] = useState({ left: 0, width: 0 });
+  const [underlineStyle, setUnderlineStyle] = useState({ left: 16, width: 37 });
 
   useEffect(() => {
     if (activeTab === '친구' && friendBtnRef.current) {
-      console.log("됨");
       setUnderlineStyle({
-        left: friendBtnRef.current.offsetLeft,
+        left: friendBtnRef.current.offsetLeft + 2,
         width: friendBtnRef.current.offsetWidth,
       });
     } else if (activeTab === '채팅' && chatBtnRef.current) {
       setUnderlineStyle({
-        left: chatBtnRef.current.offsetLeft,
+        left: chatBtnRef.current.offsetLeft + 2,
         width: chatBtnRef.current.offsetWidth,
       });
-    }
+    } 
   }, [activeTab]);
 
   const handleClickUserProfile = () => {
