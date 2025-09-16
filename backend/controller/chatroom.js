@@ -34,7 +34,7 @@ exports.getAllChatroom = async (req, res, next) => {
 exports.getChatroom = async (req, res, next) => {
     try {
         let { chatRoomId, participants } = req.body;
-
+        console.log(req.body);
         let chatroom;
 
         if (!chatRoomId) {

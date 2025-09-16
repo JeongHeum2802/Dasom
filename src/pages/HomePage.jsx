@@ -13,6 +13,7 @@ import ChatPage from '../components/HomePage/ChatPage.jsx';
 export default function HomePage() {
   const [rightPage, setRightPage] = useState("Main");
   const [clickedUser, setClickedUser] = useState(null); // Main에서 클릭된 유저
+  const [clickedFriend, setClickedFriend] = useState(null); // SideBar에서 클린되 유저
   const [scrollPosition, setScrollPosition] = useState(0); // Scroll 위치
 
   // context 사용
@@ -30,8 +31,9 @@ export default function HomePage() {
     }
   }
 
-  function handleClickFriend(clickedFriend) {
+  function handleClickFriend(clickedFriendId) {
     setRightPage("Chat");
+    setClickedFriend(clickedFriendId);
   }
 
   return (
@@ -40,7 +42,7 @@ export default function HomePage() {
         <SideBar myData={user} onClickFriend={handleClickFriend} />
         {rightPage === "Main" && <Main onUserClick={handleClickUser} scrollPosition={scrollPosition} />}
         {rightPage === "User" && <UserPage  userData={clickedUser} onCloseUserPage={handleClickUser} />}
-        {rightPage === "Chat" && <ChatPage />}
+        {rightPage === "Chat" && <ChatPage myId={user.main.naverId} youId={clickedFriend} />}
       </div>
     </AnotherUsersDataProvider>
   );
