@@ -14,11 +14,14 @@ export default function UserInfoPage() {
   const [name, setName] = useState(user.main.name);
   const [mbti, setMbti] = useState(user.main.MBTI);
   const [newImageOb, setNewImageOb] = useState(null); // 이미지 객체
+  const [onSubmit, setOnSubmit] = useState(false);
 
   const navigate = useNavigate();
 
   async function handleSubmit() {
+    setOnSubmit(true);
     try {
+      
       // 네이버 로그인 시 저장된 naverId 가져오기
       const naverId = user.main.naverId;
 
@@ -47,6 +50,7 @@ export default function UserInfoPage() {
       console.error(err);
       alert('저장 중 오류가 발생했습니다.');
     }
+    setOnSubmit(false);
   }
   
 
@@ -83,7 +87,7 @@ export default function UserInfoPage() {
         <div className="relative mb-8 mt-16">
           <img src={image} className="rounded-full w-80 h-80 object-cover border-8 border-pink-200 shadow-lg" />
           {/* image set button */}
-          <input id="fileInput" onChange={handleImageChange} type="file" className="hidden" />
+          <input id="fileInput" onChange={handleImageChange} type="file" accept="image/*" className="hidden" />
           <label htmlFor="fileInput" className="absolute bottom-2 right-2 bg-pink-500 p-3 rounded-full hover:bg-pink-600 transition-colors shadow-md">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 1  13.536 3.536L6.5 21.036H3v-3.5L14.732 5.232z" />
@@ -119,11 +123,12 @@ export default function UserInfoPage() {
 
         <div className="w-full max-w-lg mt-10">
           <button
+            disable={onSubmit}
             style={{ cursor: 'pointer' }}
             className="w-full bg-pink-500 text-white font-bold py-4 px-6 rounded-full hover:bg-pink-600 transition-colors shadow-lg duration-200"
             onClick={handleSubmit}
           >
-            저장
+            {onSubmit ? "저장중..." : "저장"}
           </button>
         </div>
       </div>
