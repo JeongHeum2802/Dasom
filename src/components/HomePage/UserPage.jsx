@@ -1,9 +1,59 @@
+import { useMyData } from "../../store/MyDataContext";
+import { useState } from 'react';
 
-export default function UserPage({ userData, onCloseUserPage }) {
- 
+export default function UserPage({ isFriend, userData, onCloseUserPage }) {
+  const targetId = userData.naverId;
+  const { user, setUser } = useMyData();
+
+  console.log(user);
+
+  async function handleAddFriend() {
+    try {
+      const bodyData = {
+        friendNaverId: targetId,
+        myNaverId: user.main.naverId,
+      }
+
+      const res = await fetch(
+        "api/plusFriend",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(bodyData),
+        });
+      const resData = await res.json();
+
+      if (resData.state == "fail") {
+        alert(resData.message);
+        return;
+      }
+      if (resData.state == "success") {
+        alert(resData.message);
+        setUser(prev => {
+          const prevFriends = prev?.others?.friends ?? [];
+          const nextFriends = prevFriends.includes(targetId)
+            ? prevFriends // 이미 있으면 굳이 새 배열 만들지 않음(실제 변화 없음)
+            : [...prevFriends, targetId]; // 새 배열
+
+          return {
+            ...prev,                         // 새 user 객체
+            others: {
+              ...prev.others,                // 새 others 객체
+              friends: nextFriends,          // 새 friends 배열
+            },
+          };
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <div className="h-full flex-1 flex flex-col bg-pink-100 text-gray-800 relative">
-      <button onClick={()=>onCloseUserPage(-1)} className="absolute top-6 right-6 text-gray-500 hover:text-gray-800 text-4xl font-bold">&times;</button>
+      <button onClick={() => onCloseUserPage(-1)} className="absolute top-6 right-6 text-gray-500 hover:text-gray-800 text-4xl font-bold">&times;</button>
       <div className="flex-10/11 flex flex-col items-center justify-center p-12">
         <img
           src={userData.profileImageUrl}
@@ -14,7 +64,7 @@ export default function UserPage({ userData, onCloseUserPage }) {
         <p className="text-2xl text-center max-w-2xl mt-6 text-gray-700">{userData.message}</p>
       </div>
       <div className="flex-1/11 bg-pink-200 p-6 flex justify-around">
-        <button className="bg-pink-400 hover:bg-pink-500 text-white font-bold py-3 px-8 rounded-full transition duration-300">
+        <button onClick={handleAddFriend} className="bg-pink-400 hover:bg-pink-500 text-white font-bold py-3 px-8 rounded-full transition duration-300">
           친구 추가
         </button>
         <button className="bg-pink-400 hover:bg-pink-500 text-white font-bold py-3 px-8 rounded-full transition duration-300">

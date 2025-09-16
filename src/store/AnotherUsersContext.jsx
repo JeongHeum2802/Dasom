@@ -27,7 +27,7 @@ export const AnotherUsersDataProvider = ({ children }) => {
       }
     }
     fetchData();
-  }, []);
+  }, [myData]);
 
   const value = { users, friends, isLoding }
 

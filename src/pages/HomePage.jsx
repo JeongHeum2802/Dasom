@@ -33,7 +33,7 @@ export default function HomePage() {
         <SideBar myData={user} />
         {clickedUser === null ?
           (<Main onUserClick={handleClickUser} scrollPosition={scrollPosition} />) :
-          (<UserPage userData={clickedUser} onCloseUserPage={handleClickUser} />)}
+          (<UserPage  userData={clickedUser} onCloseUserPage={handleClickUser} />)}
       </div>
     </AnotherUsersDataProvider>
   );

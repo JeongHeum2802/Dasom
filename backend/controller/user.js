@@ -108,30 +108,40 @@ exports.updateUserData = async (req, res, next) => {
 
 exports.plusFriend = async (req, res, next) => {
     //내 네이버 아이디와 친구의 네이버 아이디를 프론트에서 받아옴
-    const { friendNaverId, myNaverId } = req.body;
+    const { myNaverId, friendNaverId } = req.body;
+    try {
+        //먼저 내 정보를 불러옴
+        let user = await User.findOne({ "main.naverId": myNaverId });
 
-    //먼저 내 정보를 불러옴
-    let user = await User.findOne({ "main.naverId": myNaverId });
+        //내 친구들의 목록을 불러옴
+        let userFriends = user.others.friends;
 
-    //내 친구들의 목록을 불러옴
-    let userFriends = user.others.friends;
+        //만약 내 친구들 목록에 해당 유저가 이미 있는 경우 이렇게 반환 후 종료
+        if (userFriends.includes(friendNaverId)) {
+            return res.send({
+                state: "fail",
+                message: "이미 친구인 유저입니다!"
+            });
+        }
 
-    //만약 내 친구들 목록에 해당 유저가 이미 있는 경우 이렇게 반환 후 종료
-    if (userFriends.includes(friendNaverId)) {
-        return res.send({ message: "이미 친구인 유저입니다!" });
+        //아닐 경우 해당 유저를 껴서 새로운 배열 만들기
+        const updatedFriends = [friendNaverId, ...userFriends];
+
+        //새로운 배열을 친구 목록으로 저장
+        user.others.friends = updatedFriends;
+
+        await user.save();
+
+        console.log(user.others.friends);
+
+        return res.send({
+            state: "success",
+            message: "친구추가가 성공적으로 완료됐습니다!",
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("서버 이상");
     }
-
-    //아닐 경우 해당 유저를 껴서 새로운 배열 만들기
-    const updatedFriends = [friendNaverId, ...userFriends];
-
-    //새로운 배열을 친구 목록으로 저장
-    user.others.friends = updatedFriends;
-
-    await user.save();
-
-    console.log(user.others.friends);
-
-    res.end();
 }
 
 exports.deleteFriend = async (req, res, next) => {
@@ -172,7 +182,7 @@ exports.saveUserInfo = async (req, res) => {
             },
             { upsert: true, new: true }
         );
-        
+
         res.json({
             message: '저장 완료!',
             user: updatedUser
@@ -185,44 +195,44 @@ exports.saveUserInfo = async (req, res) => {
     }
 };
 
-exports.getUserAlarm = async(req,res,next)=>{
-    try{
-        const {naverId} = req.params;
+exports.getUserAlarm = async (req, res, next) => {
+    try {
+        const { naverId } = req.params;
 
-        await Alarm.deleteMany({myNaverId : naverId, isRead: true});
+        await Alarm.deleteMany({ myNaverId: naverId, isRead: true });
 
-        const alarms = await Alarm.find({"myNaverId" : naverId});
+        const alarms = await Alarm.find({ "myNaverId": naverId });
 
-        if(!alarms || alarms.length === 0){
-            return res.send({message : "알람이 없습니다"});
+        if (!alarms || alarms.length === 0) {
+            return res.send({ message: "알람이 없습니다" });
         }
 
         res.status(200).send({
             message: "알람 가져오기 성공",
             alarms
         });
-    } catch(err){
-        res.status(500).send({message: "서버 오류 발생", error: err});
+    } catch (err) {
+        res.status(500).send({ message: "서버 오류 발생", error: err });
     }
 }
 
-exports.makeAlarm = async(req, res, next) => {
-    try{
-        const {from, type, to } = req.body;
+exports.makeAlarm = async (req, res, next) => {
+    try {
+        const { from, type, to } = req.body;
 
-        const user =  await User.findOne({"main.naverId" : from});
+        const user = await User.findOne({ "main.naverId": from });
 
         const name = user.main.name;
 
         const alarm = await Alarm.create({
-            myNaverId : to,
-            fromUser : from,
-            type : type,
-            message : ""  + name + "님이 친구추가를 했습니다!"
+            myNaverId: to,
+            fromUser: from,
+            type: type,
+            message: "" + name + "님이 친구추가를 했습니다!"
         });
 
         res.send(alarm);
-    } catch(err){
-        res.status(500).send({message: "서버 오류 발생", error: err});
+    } catch (err) {
+        res.status(500).send({ message: "서버 오류 발생", error: err });
     }
 }
