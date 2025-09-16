@@ -2,15 +2,16 @@ import { useState } from 'react';
 
 // context
 import { useMyData } from '../store/MyDataContext.jsx';
-import { useUsersData } from '../store/AnotherUsersContext.jsx';
 import { AnotherUsersDataProvider } from '../store/AnotherUsersContext.jsx';
 
 // component
 import SideBar from "../components/HomePage/SideBar.jsx";
 import Main from "../components/HomePage/Main.jsx";
 import UserPage from "../components/HomePage/UserPage.jsx";
+import ChatPage from '../components/HomePage/ChatPage.jsx';
 
 export default function HomePage() {
+  const [rightPage, setRightPage] = useState("Main");
   const [clickedUser, setClickedUser] = useState(null); // Main에서 클릭된 유저
   const [scrollPosition, setScrollPosition] = useState(0); // Scroll 위치
 
@@ -21,19 +22,25 @@ export default function HomePage() {
   function handleClickUser(clickedUser, scrollPos = 0) {
     if (clickedUser === -1) {
       setClickedUser(null);
+      setRightPage("Main");
     } else {
       setScrollPosition(scrollPos);
       setClickedUser(clickedUser);
+      setRightPage("User");
     }
+  }
+
+  function handleClickFriend(clickedFriend) {
+    setRightPage("Chat");
   }
 
   return (
     <AnotherUsersDataProvider>
       <div className="flex h-screen overflow-hidden ">
-        <SideBar myData={user} />
-        {clickedUser === null ?
-          (<Main onUserClick={handleClickUser} scrollPosition={scrollPosition} />) :
-          (<UserPage  userData={clickedUser} onCloseUserPage={handleClickUser} />)}
+        <SideBar myData={user} onClickFriend={handleClickFriend} />
+        {rightPage === "Main" && <Main onUserClick={handleClickUser} scrollPosition={scrollPosition} />}
+        {rightPage === "User" && <UserPage  userData={clickedUser} onCloseUserPage={handleClickUser} />}
+        {rightPage === "Chat" && <ChatPage />}
       </div>
     </AnotherUsersDataProvider>
   );

@@ -1,32 +1,12 @@
-import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 
 import {useUsersData} from '../../store/AnotherUsersContext.jsx'
 
 import FriendsList from './FriendsList.jsx';
-import Chating from './Chatings.jsx';
 
-export default function SideBar({ myData }) {
+export default function SideBar({ myData, onClickFriend }) {
   const navigate = useNavigate();
   const { friends, isLoding } = useUsersData();
-  const [activeTab, setActiveTab] = useState('친구');
-  const friendBtnRef = useRef(null);
-  const chatBtnRef = useRef(null);
-  const [underlineStyle, setUnderlineStyle] = useState({ left: 16, width: 37 });
-
-  useEffect(() => {
-    if (activeTab === '친구' && friendBtnRef.current) {
-      setUnderlineStyle({
-        left: friendBtnRef.current.offsetLeft + 2,
-        width: friendBtnRef.current.offsetWidth,
-      });
-    } else if (activeTab === '채팅' && chatBtnRef.current) {
-      setUnderlineStyle({
-        left: chatBtnRef.current.offsetLeft + 2,
-        width: chatBtnRef.current.offsetWidth,
-      });
-    } 
-  }, [activeTab]);
 
   const handleClickUserProfile = () => {
     navigate('/MyInfo');
@@ -76,29 +56,7 @@ export default function SideBar({ myData }) {
 
       {/* Main content area */}
       <div className="h-full overflow-y-auto">
-        <div className="relative flex pt-4 pl-4 gap-6 text-lg font-semibold">
-          <button
-            ref={friendBtnRef}
-            className={`${activeTab === '친구' ? 'text-pink-700' : 'text-gray-500 hover:text-pink-700'} pb-2`}
-            onClick={() => setActiveTab('친구')}
-          >
-            친구
-          </button>
-          <button
-            ref={chatBtnRef}
-            className={`${activeTab === '채팅' ? 'text-pink-700' : 'text-gray-500 hover:text-pink-700'} pb-2`}
-            onClick={() => setActiveTab('채팅')}
-          >
-            채팅
-          </button>
-          <div
-            className="absolute bottom-0 h-0.5 bg-pink-700 transition-all duration-300 ease-in-out"
-            style={{ left: underlineStyle.left, width: underlineStyle.width }}
-          ></div>
-        </div>
-
-        {/*activeTab === '친구' ? <FriendsList friends={friends} /> : <Chating />*/}
-        <FriendsList friends={friends} />
+        <FriendsList friends={friends} onClickChatButton={onClickFriend} />
       </div>
 
       {/* Footer */}

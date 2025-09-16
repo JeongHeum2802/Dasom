@@ -1,6 +1,6 @@
 
 
-export default function FriendsList({ friends }) {
+export default function FriendsList({ friends, onClickChatButton }) {
 
   return (
     <div className="p-4">
@@ -21,7 +21,7 @@ export default function FriendsList({ friends }) {
                   </div>
                 </div>
                 {/* chat button */}
-                <button className="bg-pink-300 hover:bg-pink-400 text-pink-800 font-bold py-1 px-3 rounded-full text-sm transition">
+                <button onClick={onClickChatButton} className="bg-pink-300 hover:bg-pink-400 text-pink-800 font-bold py-1 px-3 rounded-full text-sm transition">
                   채팅
                 </button>
               </li>);
