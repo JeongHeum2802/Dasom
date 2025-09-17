@@ -3,12 +3,13 @@ import { useState } from 'react';
 
 
 export default function UserPage({ userData, onCloseUserPage, onClickChat }) {
+  const targetId = userData.naverId;
   const { user, setUser } = useMyData();
 
   async function handleAddFriend() {
     try {
       const bodyData = {
-        friendNaverId: userData.naverId,
+        friendNaverId: targetId,
         myNaverId: user.main.naverId,
       }
 
