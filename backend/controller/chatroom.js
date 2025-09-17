@@ -1,29 +1,24 @@
 const Chatroom = require('../models/chatroom');
 const Message = require('../models/message');
 
-exports.getAllChatroom = async (req, res, next) => {
-
+exports.getChatroom = async (req, res, next) => {
     try {
-        const naverId = req.params.naverId;
+        const { myNaverId, you } = req.body;
 
-        const chatrooms = await Chatroom.find({
-            participants: {$in : [naverId]}
-        })
-        .sort({ updatedAt: -1 });
+        let chatroom;
 
-        const chatRoomsWithLastMessage = await Promise.all(chatrooms.map(async (room) => {
-            const lastMessage = await Message.find({ chatRoom: room._id })
-                .sort({ createdAt: -1 })
-                .limit(1);
+        chatroom = await Chatroom.findOne({
+            participants: { $all: [myNaverId, you] }
+        });
 
-            return {
-                ...room.toObject(),
-                lastMessage
-            };
-        }));
+        if (!chatroom) {
+            chatroom = await Chatroom.create({ participants: [myNaverId, you] });
+        }
 
-        res.json({
-            chatrooms: chatRoomsWithLastMessage
+        const messages = await Message.find({ chatRoom: chatroom._id }).sort({ createdAt: -1 });
+        res.send({
+            roomId: chatroom._id,
+            messages
         });
     } catch (err) {
         console.log(err);
