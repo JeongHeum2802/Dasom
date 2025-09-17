@@ -1,11 +1,9 @@
 import { useMyData } from "../../store/MyDataContext";
 import { useState } from 'react';
 
-export default function UserPage({ isFriend, userData, onCloseUserPage }) {
-  const targetId = userData.naverId;
-  const { user, setUser } = useMyData();
 
-  console.log(user);
+export default function UserPage({ userData, onCloseUserPage, onClickChat }) {
+  const { user, setUser } = useMyData();
 
   async function handleAddFriend() {
     try {
@@ -51,9 +49,13 @@ export default function UserPage({ isFriend, userData, onCloseUserPage }) {
     }
   }
 
+  function handleChatButton() {
+    onClickChat(userData);
+  }
+
   return (
     <div className="h-full flex-1 flex flex-col bg-pink-100 text-gray-800 relative">
-      <button onClick={() => onCloseUserPage(-1)} className="absolute top-6 right-6 text-gray-500 hover:text-gray-800 text-4xl font-bold">&times;</button>
+      <button onClick={onCloseUserPage} className="absolute top-6 right-6 text-gray-500 hover:text-gray-800 text-4xl font-bold">&times;</button>
       <div className="flex-10/11 flex flex-col items-center justify-center p-12">
         <img
           src={userData.profileImageUrl}
@@ -67,7 +69,7 @@ export default function UserPage({ isFriend, userData, onCloseUserPage }) {
         <button onClick={handleAddFriend} className="bg-pink-400 hover:bg-pink-500 text-white font-bold py-3 px-8 rounded-full transition duration-300">
           친구 추가
         </button>
-        <button className="bg-pink-400 hover:bg-pink-500 text-white font-bold py-3 px-8 rounded-full transition duration-300">
+        <button onClick={handleChatButton} className="bg-pink-400 hover:bg-pink-500 text-white font-bold py-3 px-8 rounded-full transition duration-300">
           메시지 보내기
         </button>
       </div>

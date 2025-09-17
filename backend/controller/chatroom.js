@@ -25,35 +25,3 @@ exports.getChatroom = async (req, res, next) => {
         res.status(500).json({ message: "서버 에러 발생" });
     }
 };
-
-exports.getChatroom = async (req, res, next) => {
-    try {
-        let { chatRoomId, participants } = req.body;
-        console.log(req.body);
-        let chatroom;
-
-        if (!chatRoomId) {
-            chatroom = await Chatroom.findOne({
-                participants: { $all: participants }
-            });
-        }
-
-        if (!chatroom) {
-            chatroom = await Chatroom.create({ participants });
-        } else {
-            chatRoomId = chatroom._id;
-            chatroom = await Chatroom.findById(chatRoomId);
-        }
-
-        const messages = await Message.find({ chatRoom: chatroom._id })
-            .sort({ createdAt: 1 });
-
-        res.json({
-            chatRoomId: chatroom._id,
-            messages
-        });
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({message:"서버 에러 발생"});
-    }
-};

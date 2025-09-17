@@ -13,7 +13,7 @@ import ChatPage from '../components/HomePage/ChatPage.jsx';
 export default function HomePage() {
   const [rightPage, setRightPage] = useState("Main");
   const [clickedUser, setClickedUser] = useState(null); // Main에서 클릭된 유저
-  const [clickedFriend, setClickedFriend] = useState(null); // SideBar에서 클린되 유저
+  const [clickedChat, setClickedChat] = useState(null); // 현재 클릭된 Chat 상대
   const [scrollPosition, setScrollPosition] = useState(0); // Scroll 위치
 
   // context 사용
@@ -21,28 +21,31 @@ export default function HomePage() {
 
   // Main의 유저 클릭시 스크롤 저장 및 필터링
   function handleClickUser(clickedUser, scrollPos = 0) {
-    if (clickedUser === -1) {
-      setClickedUser(null);
-      setRightPage("Main");
-    } else {
       setScrollPosition(scrollPos);
       setClickedUser(clickedUser);
       setRightPage("User");
-    }
   }
 
-  function handleClickFriend(clickedFriendId) {
+  // 상대 id를 넘겨주며 채팅방 띄움
+  function handleClickChat(opponent) {
+    setClickedChat(opponent);
     setRightPage("Chat");
-    setClickedFriend(clickedFriendId);
+  }
+
+  // Main page로 돌아옴
+  function handleBack() {
+    setClickedUser(null);
+    setClickedChat(null);
+    setRightPage("Main");
   }
 
   return (
     <AnotherUsersDataProvider>
       <div className="flex h-screen overflow-hidden ">
-        <SideBar myData={user} onClickFriend={handleClickFriend} />
+        <SideBar myData={user} onClickFriend={handleClickChat} />
         {rightPage === "Main" && <Main onUserClick={handleClickUser} scrollPosition={scrollPosition} />}
-        {rightPage === "User" && <UserPage  userData={clickedUser} onCloseUserPage={handleClickUser} />}
-        {rightPage === "Chat" && <ChatPage myId={user.main.naverId} youId={clickedFriend} />}
+        {rightPage === "User" && <UserPage  userData={clickedUser} onCloseUserPage={handleBack} onClickChat={handleClickChat} />}
+        {rightPage === "Chat" && <ChatPage onClickBack={handleBack} myId={user.main.naverId} opponent={clickedChat} />}
       </div>
     </AnotherUsersDataProvider>
   );

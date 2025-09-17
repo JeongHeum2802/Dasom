@@ -88,23 +88,6 @@ exports.callBack = async (req, res, next) => {
     }
 };
 
-exports.updateUserData = async (req, res, next) => {
-    //프론트에서 유저의 추가 정보들 받기 (여기 항목들말고도 추가로 들어올 수도 있음)
-    const { MBTI, profileImageUrl, naverId } = req.body;
-
-    let user = await User.findOne({ "main.naverId": naverId });
-
-    //해당 유저의 추가 정보들 저장(해당 정보는 원래 없었고, 들어오는 정보들은 전부 유효하다고 가정)
-    user.main.profileImageUrl = profileImageUrl;
-    user.main.MBTI = MBTI;
-
-    //해당 유저의 변경점 저장
-    user.save();
-
-    console.log(user);
-
-    res.end();
-}
 
 exports.plusFriend = async (req, res, next) => {
     //내 네이버 아이디와 친구의 네이버 아이디를 프론트에서 받아옴

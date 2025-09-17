@@ -21,7 +21,7 @@ export default function FriendsList({ friends, onClickChatButton }) {
                   </div>
                 </div>
                 {/* chat button */}
-                <button onClick={() => onClickChatButton(friend.naverId)} className="bg-pink-300 hover:bg-pink-400 text-pink-800 font-bold py-1 px-3 rounded-full text-sm transition">
+                <button onClick={() => onClickChatButton(friend)} className="bg-pink-300 hover:bg-pink-400 text-pink-800 font-bold py-1 px-3 rounded-full text-sm transition">
                   채팅
                 </button>
               </li>);
