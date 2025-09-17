@@ -10,7 +10,7 @@ const api = axios.create({
 
 export default function UserInfoPage() {
   const { user, setUser } = useMyData();
-  const [image, setImage] = useState(user.main.profileImageUrl); //화면에 보이는 url
+  const [image, setImage] = useState(user.main.profileImageUrl || ""); //화면에 보이는 url
   const [name, setName] = useState(user.main.name);
   const [mbti, setMbti] = useState(user.main.MBTI);
   const [newImageOb, setNewImageOb] = useState(null); // 이미지 객체
@@ -19,6 +19,10 @@ export default function UserInfoPage() {
   const navigate = useNavigate();
 
   async function handleSubmit() {
+    if (image === "") {
+      alert("사진을 설정해주세요.!");
+      return;
+    }
     setOnSubmit(true);
     try {
       
