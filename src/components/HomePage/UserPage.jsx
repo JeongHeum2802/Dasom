@@ -8,7 +8,7 @@ export default function UserPage({ userData, onCloseUserPage, onClickChat }) {
   async function handleAddFriend() {
     try {
       const bodyData = {
-        friendNaverId: targetId,
+        friendNaverId: userData.naverId,
         myNaverId: user.main.naverId,
       }
 
