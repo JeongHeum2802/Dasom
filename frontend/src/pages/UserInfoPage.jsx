@@ -2,13 +2,8 @@ const API = import.meta.env.VITE_API_BASE;
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-
 import { useMyData } from '../store/MyDataContext';
 
-axios.create({
-  baseURL: API,
-});
 
 export default function UserInfoPage() {
   const { user, setUser } = useMyData();
@@ -43,11 +38,15 @@ export default function UserInfoPage() {
 
       const cloudinaryData = await cloudinaryRes.json();
 
-      const response = await axios.post(`${API}/saveInfo`, {
-        naverId,
-        name,
-        mbti,
-        profileImageUrl: cloudinaryData.secure_url,
+      const response = await fetch(`${API}/saveInfo`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          naverId,
+          name,
+          mbti,
+          profileImageUrl: cloudinaryData.secure_url,
+        }),
       });
       alert(response.data.message);
       setUser(response.data.user);
