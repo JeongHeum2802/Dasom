@@ -1,4 +1,4 @@
-import { useContext, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 
 import { useUsersData } from '../../store/AnotherUsersContext.jsx';
 import { useAutoAnimate } from '@formkit/auto-animate/react';

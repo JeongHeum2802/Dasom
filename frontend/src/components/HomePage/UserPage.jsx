@@ -1,5 +1,4 @@
 import { useMyData } from "../../store/MyDataContext";
-import { useState } from 'react';
 
 
 export default function UserPage({ userData, onCloseUserPage, onClickChat }) {

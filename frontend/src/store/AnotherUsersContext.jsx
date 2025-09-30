@@ -1,3 +1,5 @@
+const API = import.meta.env.VITE_API_BASE;
+
 import { createContext, useState, useContext, useEffect } from 'react';
 import { useMyData } from './MyDataContext';
 
@@ -14,7 +16,7 @@ export const AnotherUsersDataProvider = ({ children }) => {
     const fetchData = async () => {
       try {
         // 본인 제외 다른 사용자 정보
-        const responseAnother = await fetch(`/api/main/${myData.main.naverId}`);
+        const responseAnother = await fetch(`${API}/main/${myData.main.naverId}`);
         const fetchAnotherData = await responseAnother.json();
         setUsers(fetchAnotherData);
 

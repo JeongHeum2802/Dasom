@@ -1,3 +1,5 @@
+const API = import.meta.env.VITE_API_BASE;
+
 import logo from '../../assets/logo.png';
 import naverLogin from '../../assets/NaverLoginbar.png';
 import naverLoginHover from '../../assets/naverLoginbar_hover.png';
@@ -36,7 +38,7 @@ export default function LoginModal() {
   }, [userData, navigate]);
 
   async function handleClickLoginButton() {
-    const response = await fetch('/api/naverLogin');
+    const response = await fetch(`${API}/naverLogin`);
     const loginUrl = await response.json();
 
     window.open(loginUrl.login_url, "naverLogin", "width=400px,height=600px");

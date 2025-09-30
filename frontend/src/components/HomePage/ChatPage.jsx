@@ -1,15 +1,18 @@
+const API = import.meta.env.VITE_API_BASE;
+
 import { useState, useEffect, useRef } from 'react';
+import { useSmartAutoscroll } from '../../utils/useSmartAutoscroll';
 import { io } from 'socket.io-client';
 
-const SOCKET_URL = 'https://port-0-dasom-mg6g0yu28e1b2536.sel3.cloudtype.app'; // 서버 주소
-
 export default function ChatPage({ myId, opponent, onClickBack }) {
-  const socketRef = useRef(null);
 
   const [roomId, setRoomId] = useState(null);
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(true);
+
+  const socketRef = useRef(null);
+  const scrollRef = useSmartAutoscroll([messages]);
   
   // 1) 채팅방 Id, history
   useEffect(() => {
@@ -18,7 +21,7 @@ export default function ChatPage({ myId, opponent, onClickBack }) {
         const bodyData = { myNaverId: myId, you: opponent.naverId };
 
         // chatRoom message와 id 받기
-        const res = await fetch('/api/chatRoom', {
+        const res = await fetch(`${API}/chatRoom`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(bodyData),
@@ -42,7 +45,7 @@ export default function ChatPage({ myId, opponent, onClickBack }) {
   useEffect(() => {
     if (!roomId) return;
 
-    const socket = io(SOCKET_URL, {
+    const socket = io(API, {
       transports: ['websocket'],
     });
 
@@ -103,7 +106,7 @@ export default function ChatPage({ myId, opponent, onClickBack }) {
       </header>
 
       {/* 메시지 영역 */}
-      <main className="flex-1 overflow-y-auto p-4 bg-gray-50">
+      <main ref={scrollRef} className="flex-1 overflow-y-auto p-4 bg-gray-50">
         <ul className="space-y-3">
           {messages.map((m) => {
             const mine = String(m.sender) === String(myId);
@@ -112,8 +115,8 @@ export default function ChatPage({ myId, opponent, onClickBack }) {
                 {!mine && (
                   <img src={opponent.profileImageUrl} className="h-7 w-7 rounded-full bg-gray-200" />
                 )}
-                <div>
-                  <div className={`max-w-[72%] rounded-2xl ${mine ? 'rounded-tr-sm bg-blue-500 text-white shadow' : 'rounded-tl-sm bg-white border border-gray-200 shadow-sm'} px-3 py-2 text-sm`}>
+                <div className="max-w-[65%]">
+                  <div className={`rounded-2xl ${mine ? 'rounded-tr-sm bg-blue-500 text-white shadow' : 'rounded-tl-sm bg-white border border-gray-200 shadow-sm'} px-3 py-2 text-sm`}>
                     {m.text}
                   </div>
                   <div className={`mt-1 ${mine ? 'text-right mr-1' : 'ml-1'} text-[11px] text-gray-400`}>

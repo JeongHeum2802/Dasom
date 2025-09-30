@@ -9,16 +9,16 @@ const app = express();
 
 const userRoutes = require('./routes/user');
 const chatRoomRoutes = require('./routes/chatroom');
-
 const Message = require('./models/message');
 
-app.use(express.json());
-app.use(chatRoomRoutes);
-app.use(userRoutes);
 app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true,
 }));
+app.use(express.json());
+app.use(chatRoomRoutes);
+app.use(userRoutes);
+
 
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*' } });
