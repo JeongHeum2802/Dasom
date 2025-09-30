@@ -15,7 +15,7 @@ exports.getChatroom = async (req, res, next) => {
             chatroom = await Chatroom.create({ participants: [myNaverId, you] });
         }
 
-        const messages = await Message.find({ chatRoom: chatroom._id }).sort({ createdAt: -1 });
+        const messages = await Message.find({ chatRoom: chatroom._id }).sort({ createdAt: 1 });
         res.send({
             roomId: chatroom._id,
             messages
