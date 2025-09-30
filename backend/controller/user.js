@@ -77,7 +77,7 @@ exports.callBack = async (req, res, next) => {
         res.send(`
             <!DOCTYPE html><html><head><title>Login Success</title></head><body>
             <script>
-              window.opener.postMessage({type: 'login-success',payload: ${JSON.stringify(user)}}, 'http://localhost:5173/');
+              window.opener.postMessage({type: 'login-success',payload: ${JSON.stringify(user)}}, '${process.env.CLIENT_URL}/');
               window.close();
             </script>
             </body></html>
