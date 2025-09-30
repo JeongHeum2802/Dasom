@@ -1,7 +1,7 @@
 const API = import.meta.env.VITE_API_BASE;
 
 import logo from '../../assets/logo.png';
-import naverLogin from '../../assets/NaverLoginbar.png';
+import naverLogin from '../../assets/naverLoginbar.png';
 import naverLoginHover from '../../assets/naverLoginbar_hover.png';
 import { useEffect, useRef, useContext, useState } from 'react';
 import { ModalContext } from '../../store/ModalContext.jsx';
