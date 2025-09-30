@@ -1,3 +1,5 @@
+const API = import.meta.env.VITE_API_BASE;
+
 import { useMyData } from "../../store/MyDataContext";
 
 
@@ -13,7 +15,7 @@ export default function UserPage({ userData, onCloseUserPage, onClickChat }) {
       }
 
       const res = await fetch(
-        "api/plusFriend",
+        `${API}/plusFriend`,
         {
           method: "POST",
           headers: {

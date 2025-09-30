@@ -1,3 +1,5 @@
+const API = import.meta.env.VITE_API_BASE;
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -41,7 +43,7 @@ export default function UserInfoPage() {
 
       const cloudinaryData = await cloudinaryRes.json();
 
-      const response = await axios.post('/api/saveInfo', {
+      const response = await axios.post(`${API}/saveInfo`, {
         naverId,
         name,
         mbti,
