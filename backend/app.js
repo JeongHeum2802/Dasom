@@ -12,7 +12,7 @@ const chatRoomRoutes = require('./routes/chatroom');
 const Message = require('./models/message');
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173','https://dasom-six.vercel.app'],
   credentials: true,
 }));
 app.use(express.json());
