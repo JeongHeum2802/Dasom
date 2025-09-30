@@ -6,8 +6,8 @@ import axios from 'axios';
 
 import { useMyData } from '../store/MyDataContext';
 
-const api = axios.create({
-  baseURL: 'https://localhost:3000',
+axios.create({
+  baseURL: API,
 });
 
 export default function UserInfoPage() {
