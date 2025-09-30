@@ -48,8 +48,9 @@ export default function UserInfoPage() {
           profileImageUrl: cloudinaryData.secure_url,
         }),
       });
-      alert(response.data.message);
-      setUser(response.data.user);
+      const resData = await response.json();
+      alert(resData.message);
+      setUser(resData.user);
       navigate('/home');
     } catch (err) {
       console.error(err);
