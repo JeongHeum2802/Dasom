@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
 
-const SOCKET_URL = 'http://localhost:3000'; // 서버 주소
+const SOCKET_URL = 'https://port-0-dasom-mg6g0yu28e1b2536.sel3.cloudtype.app'; // 서버 주소
 
 export default function ChatPage({ myId, opponent, onClickBack }) {
   const socketRef = useRef(null);
