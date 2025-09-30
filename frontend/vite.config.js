@@ -12,7 +12,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'https://port-0-dasom-mg6g0yu28e1b2536.sel3.cloudtype.app',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }

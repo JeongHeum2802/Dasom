@@ -4,6 +4,7 @@ const http = require('http');
 const express = require('express');
 const { Server } = require('socket.io');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const app = express();
 
 const userRoutes = require('./routes/user');
@@ -14,6 +15,10 @@ const Message = require('./models/message');
 app.use(express.json());
 app.use(chatRoomRoutes);
 app.use(userRoutes);
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true,
+}));
 
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*' } });
